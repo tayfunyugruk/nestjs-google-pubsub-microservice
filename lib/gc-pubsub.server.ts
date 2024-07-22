@@ -126,6 +126,10 @@ export class GCPubSubServer extends Server implements CustomTransportStrategy {
       })
       .on(ERROR_EVENT, (err: any) => this.logger.error(err));
 
+    this.logger.log(
+      `PubSub server is started: subscription ${this.subscriptionName} exists`,
+    );
+
     callback();
   }
 
@@ -146,6 +150,8 @@ export class GCPubSubServer extends Server implements CustomTransportStrategy {
   public async handleMessage(message: Message) {
     const { data, attributes } = message;
     const rawMessage = JSON.parse(data.toString());
+
+    this.logger.log(`Server handleMessage: data ${data.toString()}`);
 
     let packet;
     if (attributes.pattern) {
