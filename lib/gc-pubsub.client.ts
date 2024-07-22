@@ -207,7 +207,9 @@ export class GCPubSubClient extends ClientProxy {
       const serializedPacket = this.serializer.serialize(packet);
       this.routingMap.set(packet.id, callback);
 
-      this.logger.log(`Client publish: serializedPacket ${serializedPacket}`);
+      this.logger.log(
+        `Client publish: serializedPacket ${JSON.stringify(serializedPacket)}`,
+      );
 
       if (this.topic) {
         if (this.useAttributes) {
