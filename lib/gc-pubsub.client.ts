@@ -157,6 +157,10 @@ export class GCPubSubClient extends ClientProxy {
             );
             const isHandled = await this.handleResponse(message);
 
+            this.logger.log(
+              `PubSub client replySubscription callback is running isHandled ${isHandled}`,
+            );
+
             if (!isHandled) {
               message.nack();
             } else if (this.noAck) {
@@ -251,13 +255,22 @@ export class GCPubSubClient extends ClientProxy {
   }): Promise<boolean> {
     const rawMessage = JSON.parse(message.data.toString());
 
+    this.logger.log(
+      `Client handleResponse rawMessage ${message.data.toString()}`,
+    );
+
     const { err, response, isDisposed, id } = this.deserializer.deserialize(
       rawMessage,
     ) as IncomingResponse;
 
     const correlationId = message.attributes.id || id;
 
+    this.logger.log(`Client handleResponse correlationId ${correlationId}`);
+
     const callback = this.routingMap.get(correlationId);
+
+    this.logger.log(`Client handleResponse callback ${!!callback}`);
+
     if (!callback) {
       return false;
     }
