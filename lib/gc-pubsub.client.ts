@@ -52,6 +52,12 @@ export class GCPubSubClient extends ClientProxy {
   constructor(protected readonly options: GCPubSubOptions) {
     super();
 
+    this.logger.log(
+      `PubSub client constructor this.options : ${JSON.stringify(
+        this.options,
+      )}`,
+    );
+
     this.clientConfig = this.options.client || GC_PUBSUB_DEFAULT_CLIENT_CONFIG;
 
     this.scopedEnvKey = this.options.scopedEnvKey ?? '';
@@ -79,12 +85,6 @@ export class GCPubSubClient extends ClientProxy {
       this.options.useAttributes ?? GC_PUBSUB_DEFAULT_USE_ATTRIBUTES;
     this.checkExistence =
       this.options.checkExistence ?? GC_PUBSUB_DEFAULT_CHECK_EXISTENCE;
-
-    this.logger.log(
-      `PubSub client constructor this.options : ${JSON.stringify(
-        this.options,
-      )}`,
-    );
 
     this.initializeSerializer(options);
     this.initializeDeserializer(options);
