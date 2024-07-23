@@ -98,6 +98,8 @@ export class GCPubSubClient extends ClientProxy {
       return this.client;
     }
 
+    this.logger.log(`PubSub client connect()`);
+
     this.client = this.createClient();
 
     this.topic = this.client.topic(this.topicName, this.publisherConfig);
@@ -112,6 +114,10 @@ export class GCPubSubClient extends ClientProxy {
         this.logger.error(message);
         throw new Error(message);
       }
+
+      this.logger.log(
+        `PubSub client is connected: topic ${this.topicName} exists`,
+      );
     }
 
     if (this.replyTopicName && this.replySubscriptionName) {
@@ -126,6 +132,10 @@ export class GCPubSubClient extends ClientProxy {
           this.logger.error(message);
           throw new Error(message);
         }
+
+        this.logger.log(
+          `PubSub client is connected: topic ${this.replyTopicName} exists`,
+        );
       }
 
       this.replySubscription = replyTopic.subscription(
