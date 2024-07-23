@@ -122,13 +122,16 @@ export class GCPubSubServer extends Server implements CustomTransportStrategy {
 
     this.subscription
       .on(MESSAGE_EVENT, async (message: Message) => {
+        const { data, attributes } = message;
         this.logger.log(
           `PubSub server subscription ${this.subscriptionName} callback is running`,
         );
         this.logger.log(
           `PubSub server subscription ${
             this.subscriptionName
-          } message : ${JSON.stringify(message)}`,
+          } data : ${data.toString()} attributes: ${JSON.stringify(
+            attributes,
+          )}`,
         );
 
         await this.handleMessage(message);
