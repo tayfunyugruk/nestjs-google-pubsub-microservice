@@ -97,6 +97,9 @@ export class GCPubSubServer extends Server implements CustomTransportStrategy {
         this.logger.error(message);
         throw new Error(message);
       }
+      this.logger.log(
+        `PubSub server is started: topic ${this.topicName} exists`,
+      );
     }
 
     this.subscription = topic.subscription(
@@ -119,6 +122,15 @@ export class GCPubSubServer extends Server implements CustomTransportStrategy {
 
     this.subscription
       .on(MESSAGE_EVENT, async (message: Message) => {
+        this.logger.log(
+          `PubSub server subscription ${this.subscriptionName} callback is running`,
+        );
+        this.logger.log(
+          `PubSub server subscription ${
+            this.subscriptionName
+          } message : ${JSON.stringify(message)}`,
+        );
+
         await this.handleMessage(message);
         if (this.noAck) {
           message.ack();

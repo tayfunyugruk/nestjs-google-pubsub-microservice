@@ -144,11 +144,19 @@ export class GCPubSubClient extends ClientProxy {
           this.logger.error(message);
           throw new Error(message);
         }
+        this.logger.log(
+          `PubSub client is connected: replySubscription ${this.replySubscription} exists`,
+        );
       }
 
       this.replySubscription
         .on(MESSAGE_EVENT, async (message: Message) => {
           try {
+            this.logger.log(
+              `PubSub client replySubscription callback is running ${JSON.stringify(
+                message,
+              )}`,
+            );
             const isHandled = await this.handleResponse(message);
 
             if (!isHandled) {
