@@ -197,7 +197,7 @@ export class GCPubSubServer extends Server implements CustomTransportStrategy {
       `Server handleMessage allHandlers size: ${allHandlers.size}`,
     );
     for (let key in allHandlers.keys()) {
-      this.logger.log(`Server handleMessage handler: ${key}`);
+      this.logger.log(`Server handleMessage allHandlers handler: ${key}`);
     }
     const handler = this.getHandlerByPattern(pattern);
 
