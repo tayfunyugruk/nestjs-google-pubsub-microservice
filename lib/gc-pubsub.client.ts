@@ -153,9 +153,7 @@ export class GCPubSubClient extends ClientProxy {
         .on(MESSAGE_EVENT, async (message: Message) => {
           try {
             this.logger.log(
-              `PubSub client replySubscription callback is running ${JSON.stringify(
-                message,
-              )}`,
+              `PubSub client replySubscription callback is running ${message}`,
             );
             const isHandled = await this.handleResponse(message);
 
@@ -215,9 +213,7 @@ export class GCPubSubClient extends ClientProxy {
       const serializedPacket = this.serializer.serialize(packet);
       this.routingMap.set(packet.id, callback);
 
-      this.logger.log(
-        `Client publish: serializedPacket ${JSON.stringify(serializedPacket)}`,
-      );
+      this.logger.log(`Client publish: serializedPacket ${serializedPacket}`);
 
       if (this.topic) {
         if (this.useAttributes) {
