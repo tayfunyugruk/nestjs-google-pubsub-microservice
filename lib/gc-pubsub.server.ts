@@ -179,6 +179,8 @@ export class GCPubSubServer extends Server implements CustomTransportStrategy {
       packet = this.deserializer.deserialize(rawMessage) as IncomingRequest;
     }
 
+    this.logger.log(`Server handleMessage: packet ${JSON.stringify(packet)}`);
+
     const pattern = isString(packet.pattern)
       ? packet.pattern
       : JSON.stringify(packet.pattern);
