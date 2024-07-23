@@ -80,6 +80,12 @@ export class GCPubSubClient extends ClientProxy {
     this.checkExistence =
       this.options.checkExistence ?? GC_PUBSUB_DEFAULT_CHECK_EXISTENCE;
 
+    this.logger.log(
+      `PubSub client constructor this.options : ${JSON.stringify(
+        this.options,
+      )}`,
+    );
+
     this.initializeSerializer(options);
     this.initializeDeserializer(options);
   }
@@ -98,7 +104,7 @@ export class GCPubSubClient extends ClientProxy {
       return this.client;
     }
 
-    this.logger.log(`PubSub client connect()`);
+    this.logger.log(`PubSub client connect() START`);
 
     this.client = this.createClient();
 
@@ -185,6 +191,8 @@ export class GCPubSubClient extends ClientProxy {
         })
         .on(ERROR_EVENT, (err: any) => this.logger.error(err));
     }
+
+    this.logger.log(`PubSub client connect() END`);
 
     return this.client;
   }
