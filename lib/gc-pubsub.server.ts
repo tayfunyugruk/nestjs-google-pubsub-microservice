@@ -192,6 +192,10 @@ export class GCPubSubServer extends Server implements CustomTransportStrategy {
 
     const handler = this.getHandlerByPattern(pattern);
 
+    this.logger.log(`Server handleMessage: pattern ${pattern}`);
+    this.logger.log(`Server handleMessage: correlationId ${correlationId}`);
+    this.logger.log(`Server handleMessage: handler ${!!handler}`);
+
     if (!handler) {
       if (!attributes.replyTo) {
         return;
@@ -214,8 +218,16 @@ export class GCPubSubServer extends Server implements CustomTransportStrategy {
       await handler(packet.data, context),
     ) as Observable<any>;
 
-    const publish = <T>(data: T) =>
+    const publish = <T>(data: T) => {
+      this.logger.log(
+        `Server handleMessage: sendMessage data : ${JSON.stringify(
+          data,
+        )} replyTo: ${attributes.replyTo} correlationId : ${correlationId}`,
+      );
       this.sendMessage(data, attributes.replyTo, correlationId);
+    };
+
+    this.logger.log(`Server handleMessage: response$ : ${response$}`);
 
     response$ && this.send(response$, publish);
   }
